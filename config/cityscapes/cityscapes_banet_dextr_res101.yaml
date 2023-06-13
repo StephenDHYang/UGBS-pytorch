@@ -1,0 +1,81 @@
+DATA:
+  data_type: cityscape_select
+  data_root: /data/mattingseg/
+  classes: 1
+  in_channels: 7
+  use_scribble: False  
+  use_trimap: False
+  use_context_bg: False
+  use_iogpoints: True
+  use_centroid_map: True
+  use_iogdextr: False
+  use_context_inst: False
+  connected_components: True
+  no_resize: False
+
+TRAIN:
+  arch: banet_dextr
+  layers: 101
+  sync_bn: False  # adopt sync_bn or not
+  train_h: 512
+  train_w: 512
+  zoom_factor: 8  # zoom factor for final prediction during training, be in [1, 2, 4, 8]
+  aux_weight: 0.4
+  relax_crop: 0.1
+  zero_pad_crop: True
+  deep_base: False
+  pretrained: True
+  step1_net: res18
+  step1_loss_func: mse
+  focus_start: [1.0,1.0,1.0,1.0,1.0]
+  focus_end: [1.0,1.0,1.0,1.0,1.0]
+  # deeplab_pretrained_model: /mnt/lustre/share_data/wangbin1/pretrained_models/resnet101-5d3b4d8f.pth
+  # cascade_pretrained_model: /mnt/lustre/share_data/wangbin1/pretrained_models/resnet18-5c106cde.pth
+  deeplab_pretrained_model: /data/mattingseg/pretrained_models/resnet101-5d3b4d8f.pth
+  cascade_pretrained_model: /data/mattingseg/pretrained_models/resnet18-5c106cde.pth
+  train_gpu: [0, 1]
+  workers: 16 # data loader workers
+  eval_workers: 1
+  batch_size: 28  # batch size for training
+  batch_size_val: 16  # batch size for validation during training, memory and speed tradeoff
+  batch_size_eval: 1
+  base_lr: 0.0025
+  lr_policy: poly # poly or exponential_triangle
+  index_split: 1
+  epochs: 50
+  start_epoch: 0
+  power: 0.9
+  momentum: 0.9
+  save_path: exp/cityscapes/banet_dextr_res101/model   # path to save the model in training
+  weight: # path to initial weight (default: none)
+  resume: # path to latest checkpoint (default: none)
+  evaluate: False  # evaluate on validation set, miou or loss
+  weight_decay: 0.0005
+  manual_seed: 0
+  print_freq: 10
+  save_freq: 10
+  BN_requires_grad: False
+  use_iou_loss: True
+  use_ssim_loss: False
+  use_lovasz_loss: False
+  use_roimasking: False
+
+Distributed:
+  #dist_url: tcp://127.0.0.1:6778
+  dist_url: tcp://127.0.0.1:6705
+  dist_backend: 'nccl'
+  multiprocessing_distributed: False
+  world_size: 1
+  rank: 0
+  use_apex: False #True
+  opt_level: 'O0'
+  keep_batchnorm_fp32:
+  loss_scale:
+
+TEST:
+  test_gpu: [0]
+  save_pic: True
+  pred_th: 0.5 # threshold of binary classification
+  bound_th: 0.008 # boundary threshold to consider the pixels as correct prediction
+  save_folder: exp/cityscapes/banet_dextr_res101/result # path to save the predicted images in evaluation
+  model_path: exp/cityscapes/banet_dextr_res101/model/train_epoch_50.pth
