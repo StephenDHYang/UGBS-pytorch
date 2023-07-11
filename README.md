@@ -85,3 +85,9 @@ Note:
 ## 5. License
 
 This project is under the MIT license.
+
+## 6. Citation
+
+```
+Coming soon
+```
