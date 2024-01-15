@@ -1,6 +1,6 @@
 # Exploring the User Guidance for More Accurate Building Segmentation
 
-This repo is the official PyTorch implementation of **Exploring the User Guidance for More Accurate Building Segmentation from High-Resolution Remote Sensing Images**. Since this work is still under review, we only provide the test code and related models, and the full code will be released soon.
+This repo is the official PyTorch implementation of **Exploring the User Guidance for More Accurate Building Segmentation from High-Resolution Remote Sensing Images** ([paper link](https://www.sciencedirect.com/science/article/pii/S1569843223004338)). Currently, we only provide the test code and related models, and the full code will be released soon.
 
 ##  1. Requirements
 
@@ -89,5 +89,13 @@ This project is under the MIT license.
 ## 6. Citation
 
 ```
-Coming soon
+@article{yang2024exploring,
+  title={Exploring the user guidance for more accurate building segmentation from high-resolution remote sensing images},
+  author={Yang, Dinghao and Wang, Bin and Li, Weijia and He, Conghui},
+  journal={International Journal of Applied Earth Observation and Geoinformation},
+  volume={126},
+  pages={103609},
+  year={2024},
+  publisher={Elsevier}
+}
 ```
