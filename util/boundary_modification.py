@@ -1,3 +1,5 @@
+# Copied from https://github.com/hkchengrex/CascadePSP/blob/master/util/boundary_modification.py
+
 import cv2
 import numpy as np
 import random

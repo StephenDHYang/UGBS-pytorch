@@ -1,3 +1,5 @@
+# Copied from https://github.com/hkchengrex/CascadePSP/blob/master/util/compute_boundary_acc.py
+
 import numpy as np
 import cv2
 
