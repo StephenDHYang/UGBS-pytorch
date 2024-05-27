@@ -1,6 +1,6 @@
 # Exploring the User Guidance for More Accurate Building Segmentation
 
-This repo is the official PyTorch implementation of **Exploring the User Guidance for More Accurate Building Segmentation from High-Resolution Remote Sensing Images** ([paper link](https://www.sciencedirect.com/science/article/pii/S1569843223004338)). Currently, we only provide the test code and related models, and the full code will be released soon.
+This repo is the official PyTorch implementation of **Exploring the User Guidance for More Accurate Building Segmentation from High-Resolution Remote Sensing Images** ([paper link](https://www.sciencedirect.com/science/article/pii/S1569843223004338)). 
 
 ##  1. Requirements
 
@@ -62,7 +62,50 @@ train: Inria-building dataset
 |    Extreme points     | [gdrive](https://drive.google.com/file/d/1we5bI-TdyVGsh-FIRhvT4rFli0xg3Hyi/view?usp=sharing) | 93.1 | 93.1 |   86.9   | 96.4 |       |
 | Inside-outside points | [gdrive](https://drive.google.com/file/d/1ttV0-rSssoekS02EyzcmtXGhM-o-BpGp/view?usp=share_link) | 92.8 | 92.9 |   86.0   | 96.3 |       |
 
-## 4. Inference
+## 4. Training
+
+You can set the training and inference configs by editing the yaml files under `./configs/{dataset}/{task_name}`
+
+Train on a single machine:
+
+```yaml
+Distributed:
+  sync_bn: False # adopt sync_bn or not
+  dist_url: tcp://127.0.0.1:12345
+  dist_backend: 'nccl'
+  multiprocessing_distributed: False
+  ...
+```
+
+Train with distributed setting:
+
+```yaml
+Distributed:
+  sync_bn: True # adopt sync_bn or not
+  dist_url: tcp://127.0.0.1:12345
+  dist_backend: 'nccl'
+  multiprocessing_distributed: True
+  world_size: 1
+  rank: 0
+  use_apex: False # use apex for distributed training or not
+  opt_level: 'O0'
+  keep_batchnorm_fp32:
+  loss_scale:
+```
+
+Run the training job:
+
+```shell
+sh {tool_name}/train.sh {dataset} {task_name}
+```
+
+An example of training UGBS on Vegas:
+
+```shell
+sh seg_tool/train_banet.sh vegas banet_iog_res101
+```
+
+## 5. Inference
 
 Run on one GPU to evaluate the model, the examples are as follow:
 
@@ -82,11 +125,11 @@ Note:
 
 1. To evaluate segmentation methods with the metrics of [CVNet](https://github.com/xzq-njust/CVNet) (IoU, WCov, BF-score and Dice),  you shoud use `seg_tool/evaluate_cvnet.sh`
 
-## 5. License
+## 6. License
 
 This project is under the MIT license.
 
-## 6. Citation
+## 7. Citation
 
 ```
 @article{yang2024exploring,
